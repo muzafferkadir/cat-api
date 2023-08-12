@@ -1,6 +1,12 @@
+import { AxiosError } from "axios";
 import { verify } from "jsonwebtoken";
 import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
+
+export interface UserResponse {
+  user: string | null;
+  error: AxiosError | null;
+}
 
 export async function GET() {
   const cookieStore = cookies();

@@ -5,28 +5,27 @@ import { NextResponse } from "next/server";
 
 export async function GET() {
   const cookieStore = cookies();
-
   const token = cookieStore.get("secret");
-
   if (!token) {
     return NextResponse.json(
-      {
-        message: "Unauthorized",
-      },
-      {
-        status: 401,
-      }
+      { message: "Unauthorized", },
+      { status: 401, }
     );
   }
 
   const { value } = token;
-
-  // Always check this
   const secret = process.env.JWT_SECRET || "";
 
   try {
     verify(value, secret);
+  } catch (error) {
+    return NextResponse.json(
+      { message: "Unauthorized", },
+      { status: 401, }
+    );
+  }
 
+  try {
     // TODO: create axios instance
     const response = await axios.get(`${process.env.CAT_API_BASE_URL}/images/search`,
       {
@@ -35,6 +34,7 @@ export async function GET() {
         }
       }
     )
+
     if (response?.data?.[0]?.url) {
       return NextResponse.json(
         { url: response.data[0].url },

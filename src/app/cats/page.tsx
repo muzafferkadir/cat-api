@@ -5,27 +5,29 @@ import styles from "./page.module.scss";
 import Image from "next/image";
 import Button from "@/components/ui/button/button";
 import axios from "axios";
-import { useRouter } from 'next/navigation';
+import { useRouter } from "next/navigation";
+import { motion } from "framer-motion";
+import toast from "react-hot-toast";
 
 export default function Page() {
   const [catImageUrl, setCatImageUrl] = useState<string>("/images/cat.jpeg");
   const [loading, setLoading] = useState<boolean>(false);
+  const [animationGoLeft, setAnimationGoLeft] = useState<boolean>(true);
   const { push } = useRouter();
-
-  useEffect(() => {
-    getNewCatImage();
-  }, []);
 
   const getNewCatImage = async () => {
     try {
       setLoading(true);
+      setAnimationGoLeft(!animationGoLeft);
       const { data } = await axios.get("/api/cats");
       if (data.url) {
         setCatImageUrl(data.url);
-        setLoading(false);
       }
-    } catch (error) {
-      // TODO: toast message
+    } catch (error: any) {
+      if (error.response.status === 401) {
+        push("/auth/login");
+      }
+      toast.error(error.response?.data?.message || "Something went wrong");
       setLoading(false);
     }
   };
@@ -33,9 +35,8 @@ export default function Page() {
   const logOut = async () => {
     try {
       await axios.post("/api/auth/logout");
-    } catch (error) {
-      // TODO: toast message
-      console.log(error);
+    } catch (error: any) {
+      toast.error(error.response?.data?.message || "Something went wrong");
     }
     push("/auth/login");
   };
@@ -44,9 +45,25 @@ export default function Page() {
     <div className={styles.container}>
       <div className={styles.pageTitle}>Welcome to Cat API</div>
       <div className={styles.innerContainer}>
-        <span className={styles.imgHolder}>
-          <Image src={catImageUrl} alt="/" width={300} height={300} priority />
-        </span>
+        <motion.span
+          className={styles.imgHolder}
+          animate={{
+            opacity: loading ? 0 : 1,
+            x: loading ? (animationGoLeft ? 600 : -600) : 0,
+          }}
+          transition={{ type: "keyframes" }}
+        >
+          <Image
+            src={catImageUrl}
+            alt="/"
+            width={300}
+            height={300}
+            priority
+            onLoadingComplete={() => {
+              setLoading(false);
+            }}
+          />
+        </motion.span>
         <div className={styles.submitContainer}>
           <Button name="Refresh" onClick={getNewCatImage} loading={loading} />
         </div>
