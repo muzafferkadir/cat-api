@@ -1,0 +1,44 @@
+.container {
+  height: 100vh;
+  display: flex;
+  gap: 0.1rem;
+  @media (max-width: 1024px) {
+    height: 100dvh;
+  }
+}
+.authContainer {
+  width: 40rem;
+  box-shadow:
+    rgba(50, 50, 93, 0.25) 0px 50px 100px -20px,
+    rgba(0, 0, 0, 0.3) 0px 30px 60px -30px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100dvh;
+  padding: 0 4rem;
+  @media (max-width: 1024px) {
+    height: 100dvh;
+  }
+  form {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+    * {
+      width: 100%;
+    }
+  }
+}
+.bannerContainer {
+  flex: 1;
+  position: relative;
+  height: 100dvh;
+  @media (max-width: 1024px) {
+    height: 100dvh;
+  }
+}
+.title {
+  margin-bottom: 2rem;
+  font-weight: 500;
+}
