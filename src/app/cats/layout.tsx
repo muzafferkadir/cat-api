@@ -10,7 +10,7 @@ interface UserResponse {
   error: AxiosError | null;
 }
 
-export default function DashboardLayout({
+export default function CatsLayout({
   children,
 }: {
   children: React.ReactNode;

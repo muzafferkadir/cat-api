@@ -21,7 +21,7 @@ export default function Login() {
     try {
       const { data } = await axios.post("/api/auth/login", payload);
       // TODO: toast message
-      push('/dashboard')
+      push('/cats')
     } catch (e) {
       const error = e as AxiosError;
       return error

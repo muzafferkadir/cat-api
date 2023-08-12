@@ -6,8 +6,9 @@ import Button from "@/components/ui/button/button";
 import axios from "axios";
 
 export default function Page() {
-  const [catImageUrl, setCatImageUrl] = useState<string>("");
+  const [catImageUrl, setCatImageUrl] = useState<string>("/images/cat.jpeg");
   const [loading, setLoading] = useState<boolean>(false);
+  
 
   useEffect(() => {
     getNewCatImage();
@@ -31,7 +32,7 @@ export default function Page() {
     <div className={styles.container}>
       <div className={styles.innerContainer}>
         <span className={styles.imgHolder}>
-          <Image src={catImageUrl} alt="/" width={300} height={300} />
+          <Image src={catImageUrl} alt="/" width={300} height={300} priority />
         </span>
         <div className={styles.submitContainer}>
           <Button name="Yenile" onClick={getNewCatImage} loading={loading} />
