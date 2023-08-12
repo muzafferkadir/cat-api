@@ -1,20 +1,19 @@
-"use client"
-
+'use client';
 import Button from "@/components/ui/button/button"
 import styles from "./page.module.scss"
 import Input from "@/components/ui/input/input"
 import { useState } from "react"
 import Image from "next/image"
 import axios, { AxiosError } from "axios"
-import { useRouter } from "next/navigation"
+import { useRouter } from 'next/navigation';
 
 export default function Login() {
-  const { push } = useRouter();
   const [payload, setPayload] = useState({
-    username: '',
-    password: ''
+    username: 'admin',
+    password: 'admin'
   })
   const { username, password } = payload
+  const { push } = useRouter()
 
   const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -32,11 +31,12 @@ export default function Login() {
   return (
     <div className={styles.container}>
       <div className={styles.authContainer}>
-        <h1 className={styles.title}>Cat Images</h1>
+        <h1 className={styles.title}>😺 Cat Images 😾</h1>
+        <h2 className={styles.subtitle}>Please login to continue</h2>
         <form onSubmit={handleLogin}>
-          <Input value={username} onChange={((e) => setPayload({ ...payload, username: e.target.value }))} />
-          <Input value={password} onChange={((e) => setPayload({ ...payload, password: e.target.value }))} />
-          <Button name="Giriş Yap" />
+          <Input value={username} onChange={((e) => setPayload({ ...payload, username: e.target.value }))}  placeholder="Username"/>
+          <Input value={password} onChange={((e) => setPayload({ ...payload, password: e.target.value }))}  placeholder="Password" type="password"/>
+          <Button name="Login" />
         </form>
       </div>
       <div className={styles.bannerContainer}>
