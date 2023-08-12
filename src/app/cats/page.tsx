@@ -48,7 +48,7 @@ export default function Page() {
           <Image src={catImageUrl} alt="/" width={300} height={300} priority />
         </span>
         <div className={styles.submitContainer}>
-          <Button name="Yenile" onClick={getNewCatImage} loading={loading} />
+          <Button name="Refresh" onClick={getNewCatImage} loading={loading} />
         </div>
       </div>
       <div className={styles.logOut} onClick={logOut}>
@@ -66,7 +66,7 @@ export default function Page() {
             clipRule="evenodd"
           />
         </svg>
-        <span>Çıkış Yap</span>
+        <span>Logout</span>
       </div>
     </div>
   );
