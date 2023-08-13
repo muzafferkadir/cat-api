@@ -7,7 +7,6 @@ import Image from "next/image";
 import axios, { AxiosError } from "axios";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
-import { UserResponse } from "@/app/api/auth/me/route";
 
 export default function Login() {
   const [payload, setPayload] = useState({
@@ -21,9 +20,9 @@ export default function Login() {
   useEffect(() => {
     const getUser = async () => {
       try {
-        const { user }: UserResponse = await axios.get("/api/auth/me");
+        const { data } = await axios.get("/api/auth/me");
 
-        if (user) {
+        if (data?.user && data?.user !== "") {
           push("/cats");
           return;
         }
