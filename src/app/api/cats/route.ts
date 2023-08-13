@@ -1,39 +1,14 @@
-import axios from "axios";
-import { verify } from "jsonwebtoken";
-import { cookies } from "next/headers";
+import { getCatImage } from "@/services/api";
 import { NextResponse } from "next/server";
+import { checkJWT } from "../auth/me/route";
 
 export async function GET() {
-  const cookieStore = cookies();
-  const token = cookieStore.get("secret");
-  if (!token) {
-    return NextResponse.json(
-      { message: "Unauthorized", },
-      { status: 401, }
-    );
-  }
-
-  const { value } = token;
-  const secret = process.env.JWT_SECRET || "";
-
   try {
-    verify(value, secret);
-  } catch (error) {
-    return NextResponse.json(
-      { message: "Unauthorized", },
-      { status: 401, }
-    );
-  }
+    if(!checkJWT()) {
+      return NextResponse.json({ message: "Unauthorized", }, { status: 401, });
+    }
 
-  try {
-    // TODO: create axios instance
-    const response = await axios.get(`${process.env.CAT_API_BASE_URL}/images/search`,
-      {
-        headers: {
-          'x-api-key': process.env.CAT_API_KEY
-        }
-      }
-    )
+    const response = await getCatImage();
 
     if (response?.data?.[0]?.url) {
       return NextResponse.json(
@@ -42,12 +17,18 @@ export async function GET() {
       );
     }
 
-    return NextResponse.json(
+    throw NextResponse.json(
       { message: "Picture not found", },
       { status: 404, }
     );
+  } catch (e: any) {
+    if (e?.response?.status === 401) {
+      return NextResponse.json(
+        { message: "Unauthorized", },
+        { status: 401, }
+      );
+    }
 
-  } catch (e) {
     return NextResponse.json(
       { message: "Something went wrong", },
       { status: 400, }

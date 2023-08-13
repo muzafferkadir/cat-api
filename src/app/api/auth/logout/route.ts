@@ -1,6 +1,10 @@
 import { serialize } from "cookie";
 
-export async function POST(request: Request) {
+export async function POST() {
+  return logout();
+}
+
+export const logout = () => {
   const seralized = serialize('secret', '', {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",

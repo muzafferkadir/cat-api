@@ -1,43 +1,25 @@
-"use client";
-import { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
-import axios, { AxiosError } from "axios";
-import { PacmanLoader } from "react-spinners";
-import styles from "./page.module.scss";
-import { UserResponse } from "../api/auth/me/route";
+"use server";
+import { cookies } from "next/headers";
+import { verify } from "jsonwebtoken";
+import { redirect } from "next/navigation";
 
-export default function CatsLayout({
+export default async function CatsLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const [isSuccess, setIsSuccess] = useState<boolean>(false);
-  const { push } = useRouter();
+  const cookieStore = cookies();
+  const token = cookieStore.get("secret");
+  const secret = process.env.JWT_SECRET || "";
 
-  useEffect(() => {
-    const getUser = async () => {
-      try {
-        const { error }: UserResponse = await axios.get("/api/auth/me");
-
-        if (error) {
-          push("/auth/login");
-          return;
-        }
-
-        // if the error did not happen, if everything is alright
-        setIsSuccess(true);
-      } catch (error) {}
-    };
-
-    getUser();
-  }, [push]);
-
-  if (!isSuccess) {
-    return (
-      <div className={styles.container}>
-        <PacmanLoader color="#36d7b7" />
-      </div>
-    );
+  if (token?.value) {
+    try {
+      verify(token?.value, secret);
+    } catch (error) {
+      redirect("/auth/login");
+    }
+  } else {
+    redirect("/auth/login");
   }
 
   return <main>{children}</main>;

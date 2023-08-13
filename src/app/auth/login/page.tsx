@@ -4,7 +4,7 @@ import styles from "./page.module.scss";
 import Input from "@/components/ui/input/input";
 import { useEffect, useState } from "react";
 import Image from "next/image";
-import axios, { AxiosError } from "axios";
+import axios from "axios";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 
@@ -36,13 +36,12 @@ export default function Login() {
     e.preventDefault();
     try {
       setLoading(true);
-      const { data } = await axios.post("/api/auth/login", payload);
+      await axios.post("/api/auth/login", payload);
       toast.success("Login success");
       push("/cats");
     } catch (e: any) {
       setLoading(false);
       toast.error(e.response?.data?.message || "Login failed");
-      console.log(e.response?.data?.message);
     }
   };
 

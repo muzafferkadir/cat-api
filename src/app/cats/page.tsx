@@ -24,6 +24,7 @@ export default function Page() {
         setCatImageUrl(data.url);
       }
     } catch (error: any) {
+      console.log("hataaa",error);
       if (error.response.status === 401) {
         push("/auth/login");
       }
@@ -36,6 +37,8 @@ export default function Page() {
     try {
       await axios.post("/api/auth/logout");
     } catch (error: any) {
+      console.log("hataaa",error);
+
       toast.error(error.response?.data?.message || "Something went wrong");
     }
     push("/auth/login");
