@@ -1,12 +1,10 @@
 import { serialize } from "cookie";
 import { sign } from "jsonwebtoken";
 import { NextResponse } from "next/server";
-import { logout } from "../logout/route";
 
 const MAX_AGE = 60 * 15; // 15 minutes
 
 export async function POST(request: Request) {
-  logout();
   const body = await request.json();
 
   const { username, password } = body;
