@@ -17,21 +17,14 @@ export async function GET() {
       );
     }
 
-    throw NextResponse.json(
+    return NextResponse.json(
       { message: "Picture not found", },
       { status: 404, }
     );
   } catch (e: any) {
-    if (e?.response?.status === 401) {
-      return NextResponse.json(
-        { message: "Unauthorized", },
-        { status: 401, }
-      );
-    }
-
     return NextResponse.json(
       { message: "Something went wrong", },
-      { status: 400, }
+      { status: 500, }
     );
   }
 }
