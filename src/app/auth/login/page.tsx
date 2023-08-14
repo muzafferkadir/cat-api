@@ -2,7 +2,7 @@
 import Button from "@/components/ui/button/button";
 import styles from "./page.module.scss";
 import Input from "@/components/ui/input/input";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Image from "next/image";
 import axios from "axios";
 import { useRouter } from "next/navigation";
@@ -16,21 +16,6 @@ export default function Login() {
   const { username, password } = payload;
   const { push } = useRouter();
   const [loading, setLoading] = useState<boolean>(false);
-
-  useEffect(() => {
-    const getUser = async () => {
-      try {
-        const { data } = await axios.get("/api/auth/me");
-
-        if (data?.user && data?.user !== "") {
-          push("/cats");
-          return;
-        }
-      } catch (error: any) {}
-    };
-
-    getUser();
-  }, [push]);
 
   const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
